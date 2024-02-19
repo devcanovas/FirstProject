@@ -53,7 +53,7 @@ void handleOption(int opt)
             EvaluateBand();
             break;
         case 4:
-            Console.WriteLine("Você escolheu a opção 4!");
+            AverageBandNotes();
             break;
         case -1:
             Console.WriteLine("Tchau tchau!");
@@ -61,6 +61,31 @@ void handleOption(int opt)
         default:
             Console.WriteLine("Opção inválida!");
             break;
+    }
+}
+
+void AverageBandNotes()
+{
+    Console.Clear();
+    BuildTitle("Consultar média de uma banda");
+    Console.WriteLine("Digite o nome da banda que você deseja consultar a média:");
+    string band = Console.ReadLine()!;
+    if (registeredBands.ContainsKey(band))
+    {
+        Console.WriteLine($"Banda escolhida: {band}");
+        double average = registeredBands[band].Average();
+        Console.WriteLine($"A média de notas da banda selecionada é de: {average}");
+        Console.WriteLine("\nVoltando para o menu em 4 segundos...");
+        Thread.Sleep(4000);
+        Console.Clear();
+        ShowMenuOptions();
+    } else
+    {
+        Console.WriteLine($"A banda {band} não foi encontrada\n");
+        Console.WriteLine("Pressione ENTER para voltar ao menu principal!");
+        Console.ReadKey();
+        Console.Clear();
+        ShowMenuOptions();
     }
 }
 
@@ -76,8 +101,7 @@ void EvaluateBand()
         int note = int.Parse(Console.ReadLine()!) ;
         registeredBands[band].Add(note);
         Console.WriteLine($"A note {note} foi atribuida a banda {band} com sucesso!\n");
-        Console.WriteLine("Pressione ENTER para voltar ao menu principal!");
-        Console.ReadKey();
+        Thread.Sleep(2000);
         Console.Clear();
         ShowMenuOptions();
     } else
