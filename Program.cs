@@ -1,7 +1,12 @@
-﻿using System.Security.Cryptography;
+﻿using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 string welcomeMessage = "Boas vindas ao Screen Sound";
-List<string> bandList = new List<string> { "Bring Me The Horizon", "Slipknot", "Linkin Park" };
+
+Dictionary<string, List<int>> registeredBands = new Dictionary<string, List<int>>();
+registeredBands.Add("Bring Me The Horizon", new List<int> { 10, 10, 10 });
+registeredBands.Add("Slipknot", new List<int> { 8, 9, 10 });
+registeredBands.Add("Linkin Park", new List<int> { 10, 10, 10 });
 
 void ShowLogo()
 {
@@ -61,10 +66,10 @@ void handleOption(int opt)
 void InputBands()
 {
     Console.Clear();
-    Console.WriteLine("Registro de bandas");
+    BuildTitle("Registro de bandas");  
     Console.WriteLine("Digite o nome da banda que deseja registrar");
     string bandName = Console.ReadLine()!;
-    bandList.Add(bandName);
+    registeredBands.Add(bandName, new List<int>());
     Console.WriteLine($"A banda {bandName} foi registrada com sucesso!");
     Thread.Sleep(2000);
     Console.Clear();
@@ -74,17 +79,23 @@ void InputBands()
 void ShowBands()
 {
     Console.Clear();
-    Console.WriteLine("**********************************************");
-    Console.WriteLine("EXIBINDO LISTA DE NOMES DAS BANDAS REGISTRADAS");
-    Console.WriteLine("**********************************************\n");
-    bandList.ForEach(delegate (string bandName)
+    BuildTitle("Exibindo lista de nomes das bandas registradas");
+    foreach(string bandNames in registeredBands.Keys)
     {
-        Console.WriteLine($"- {bandName}");
-    });
+        Console.WriteLine($"- {bandNames}");
+    }
     Console.WriteLine("\nPressiona ENTER para voltar ao menu inicial!");
     Console.ReadKey();
     Console.Clear();
     ShowMenuOptions();
+}
+
+void BuildTitle(string title)
+{
+    string astherics = string.Empty.PadLeft(title.Length, '*');
+    Console.WriteLine(astherics);
+    Console.WriteLine(title);
+    Console.WriteLine($"{astherics}\n");
 }
 
 ShowMenuOptions();
