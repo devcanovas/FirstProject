@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 using System.Security.Cryptography;
 
 string welcomeMessage = "Boas vindas ao Screen Sound";
@@ -49,7 +50,7 @@ void handleOption(int opt)
             ShowBands();
             break;
         case 3:
-            Console.WriteLine("Você escolheu a opção 3!");
+            EvaluateBand();
             break;
         case 4:
             Console.WriteLine("Você escolheu a opção 4!");
@@ -60,6 +61,32 @@ void handleOption(int opt)
         default:
             Console.WriteLine("Opção inválida!");
             break;
+    }
+}
+
+void EvaluateBand()
+{
+    Console.Clear();
+    BuildTitle("Avaliar uma banda");
+    Console.WriteLine("Digite o nome da banda que você deseja avaliar");
+    string band = Console.ReadLine()!;
+    if(registeredBands.ContainsKey(band))
+    {
+        Console.WriteLine($"Qual a nota que a banda {band} merece?: ");
+        int note = int.Parse(Console.ReadLine()!) ;
+        registeredBands[band].Add(note);
+        Console.WriteLine($"A note {note} foi atribuida a banda {band} com sucesso!\n");
+        Console.WriteLine("Pressione ENTER para voltar ao menu principal!");
+        Console.ReadKey();
+        Console.Clear();
+        ShowMenuOptions();
+    } else
+    {
+        Console.WriteLine($"A banda {band} não foi encontrada\n");
+        Console.WriteLine("Pressione ENTER para voltar ao menu principal!");
+        Console.ReadKey();
+        Console.Clear();
+        ShowMenuOptions();
     }
 }
 
@@ -82,7 +109,7 @@ void ShowBands()
     BuildTitle("Exibindo lista de nomes das bandas registradas");
     foreach(string bandNames in registeredBands.Keys)
     {
-        Console.WriteLine($"- {bandNames}");
+        Console.WriteLine($"- {bandNames} - Notas: {string.Join(",", registeredBands[bandNames])}");
     }
     Console.WriteLine("\nPressiona ENTER para voltar ao menu inicial!");
     Console.ReadKey();
